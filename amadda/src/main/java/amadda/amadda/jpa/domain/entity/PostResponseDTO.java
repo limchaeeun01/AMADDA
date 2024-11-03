@@ -38,7 +38,7 @@ public class PostResponseDTO {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "privacy")
-    private Privacy privacy = Privacy.PUBLIC;
+    private Privacy privacy;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "food_category")
@@ -68,7 +68,7 @@ public class PostResponseDTO {
     private ThemeEntity theme;
 
     public enum Privacy {
-        public  , private  , only_me
+        PUBLIC, PRIVATE, ONLY_ME
     }
 
     public enum FoodCategory {
