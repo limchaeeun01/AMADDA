@@ -13,7 +13,7 @@ import amadda.amadda.jpa.domain.entity.PostResponseDTO;
 public interface PostDAO extends JpaRepository<PostResponseDTO, Integer> {
 
     @Query("SELECT p FROM PostResponseDTO p WHERE p.weather = :weather")
-    List<PostResponseDTO> findPostsByWeather(@Param("weather") PostResponseDTO.Weather weather);
+    List<PostResponseDTO> findPostsByWeather(@Param("weather") String weather);
 
     @Query("SELECT p FROM PostResponseDTO p WHERE p.mood = :mood")
     List<PostResponseDTO> findPostsByMood(@Param("mood") PostResponseDTO.Mood mood);

@@ -48,9 +48,8 @@ public class PostResponseDTO {
     @Column(name = "mood")
     private Mood mood;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "weather")
-    private Weather weather;
+    private String weather;
 
     @Column(name = "receipt_verification")
     private Boolean receiptVerification = false;
@@ -79,7 +78,4 @@ public class PostResponseDTO {
         기쁨, 슬픔, 화남, 평온
     }
 
-    public enum Weather {
-        맑음, 눈, 비, 흐림, 바람
-    }
 }

@@ -14,7 +14,7 @@ public class PostService {
     @Autowired
     private PostDAO postDAO;
 
-    public List<PostResponseDTO> getPostsByWeather(PostResponseDTO.Weather weather) {
+    public List<PostResponseDTO> getPostsByWeather(String weather) {
         return postDAO.findPostsByWeather(weather);
     }
 
