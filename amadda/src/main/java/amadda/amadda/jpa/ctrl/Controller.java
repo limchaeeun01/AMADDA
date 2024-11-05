@@ -1,6 +1,7 @@
 package amadda.amadda.jpa.ctrl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,8 +53,9 @@ public class Controller {
     }
 
     @GetMapping("/posts/mood")
-    public ResponseEntity<List<PostResponseDTO>> getPostsByMood(@RequestParam PostResponseDTO.Mood mood) {
-        List<PostResponseDTO> posts = postService.getPostsByMood(mood);
+    public ResponseEntity<List<PostResponseDTO>> getPostsByMood(@RequestParam List<String> moods) {
+        System.out.println("params = " + moods); // 수신된 moods 로그 출력
+        List<PostResponseDTO> posts = postService.getPostsByMood(moods);
         return ResponseEntity.ok(posts);
     }
 
@@ -71,8 +73,20 @@ public class Controller {
 
     @GetMapping("/posts/searchText")
     public ResponseEntity<List<PostResponseDTO>> searchPosts(@RequestParam String searchText) {
+        System.out.println("params = " + searchText);
         List<PostResponseDTO> result = postService.getPostsBySearchText(searchText);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/posts/latest")
+    public ResponseEntity<List<PostResponseDTO>> getLatestPosts() {
+        List<PostResponseDTO> posts = postService.getLatestPosts();
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/posts/verification")
+    public List<PostResponseDTO> getPostsByReceiptVerification(@RequestParam Boolean receiptVerification) {
+        return postService.findPostsByReceiptVerification(receiptVerification);
     }
 
     @Autowired

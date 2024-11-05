@@ -30,4 +30,10 @@ public interface PostDAO extends JpaRepository<PostResponseDTO, Integer> {
     @Query("SELECT p FROM TagEntity t JOIN PostResponseDTO p ON t.post.postId = p.postId WHERE t.tagName = :searchText")
     List<PostResponseDTO> findByTagTagName(@Param("searchText") String searchText);
 
+    List<PostResponseDTO> findByMoodIn(List<String> moods);
+
+    List<PostResponseDTO> findAllByOrderByPostDateAsc();
+
+    List<PostResponseDTO> findByReceiptVerification(Boolean receiptVerification);
+
 }

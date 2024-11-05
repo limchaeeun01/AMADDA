@@ -75,7 +75,7 @@ public class PostResponseDTO {
     }
 
     public enum Mood {
-        기쁨, 슬픔, 화남, 평온
+        평온, 행복, 사랑, 호기심, 스트레스, 귀찮음
     }
 
 }

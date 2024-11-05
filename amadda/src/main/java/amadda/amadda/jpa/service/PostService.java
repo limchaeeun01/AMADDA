@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import amadda.amadda.jpa.dao.PostDAO;
 import amadda.amadda.jpa.domain.entity.PostResponseDTO;
+import amadda.amadda.jpa.domain.entity.PostResponseDTO.Mood;
 
 @Service
 public class PostService {
@@ -21,8 +22,8 @@ public class PostService {
         return postDAO.findPostsByWeather(weather);
     }
 
-    public List<PostResponseDTO> getPostsByMood(PostResponseDTO.Mood mood) {
-        return postDAO.findPostsByMood(mood);
+    public List<PostResponseDTO> getPostsByMood(List<String> moods) {
+        return postDAO.findByMoodIn(moods);
     }
 
     public List<PostResponseDTO> getPostsByPrivacy(PostResponseDTO.Privacy privacy) {
@@ -60,5 +61,13 @@ public class PostService {
         combinedPosts.addAll(postsByTag);
 
         return new ArrayList<>(combinedPosts);
+    }
+
+    public List<PostResponseDTO> getLatestPosts() {
+        return postDAO.findAllByOrderByPostDateAsc();
+    }
+
+    public List<PostResponseDTO> findPostsByReceiptVerification(Boolean receiptVerification) {
+        return postDAO.findByReceiptVerification(receiptVerification);
     }
 }
