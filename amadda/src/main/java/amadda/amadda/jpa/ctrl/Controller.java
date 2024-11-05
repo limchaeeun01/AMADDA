@@ -69,6 +69,12 @@ public class Controller {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping("/posts/searchText")
+    public ResponseEntity<List<PostResponseDTO>> searchPosts(@RequestParam String searchText) {
+        List<PostResponseDTO> result = postService.getPostsBySearchText(searchText);
+        return ResponseEntity.ok(result);
+    }
+
     @Autowired
     private WeatherService weatherService;
 

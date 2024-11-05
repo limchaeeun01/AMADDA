@@ -1,6 +1,9 @@
 package amadda.amadda.jpa.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +49,16 @@ public class PostService {
             default:  // "Black"
                 return 0;
         }
+    }
+
+    public List<PostResponseDTO> getPostsBySearchText(String searchText) {
+        List<PostResponseDTO> postsByRestaurant = postDAO.findByRestaurantName(searchText);
+        List<PostResponseDTO> postsByTag = postDAO.findByTagTagName(searchText);
+
+        Set<PostResponseDTO> combinedPosts = new HashSet<>();
+        combinedPosts.addAll(postsByRestaurant);
+        combinedPosts.addAll(postsByTag);
+
+        return new ArrayList<>(combinedPosts);
     }
 }
