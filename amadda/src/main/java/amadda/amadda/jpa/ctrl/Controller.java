@@ -1,19 +1,20 @@
 package amadda.amadda.jpa.ctrl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import amadda.amadda.jpa.domain.entity.PostEntity;
 import amadda.amadda.jpa.domain.entity.PostResponseDTO;
 import amadda.amadda.jpa.domain.entity.UserRequestDTO;
 import amadda.amadda.jpa.domain.entity.WeatherResponseDTO;
@@ -52,6 +53,12 @@ public class Controller {
         }
     }
 
+    @GetMapping("/posts/postId")
+    public ResponseEntity<List<PostResponseDTO>> getPostsByIds(@RequestParam List<Integer> postIds) {
+        List<PostResponseDTO> posts = postService.getPostsByIds(postIds);
+        return ResponseEntity.ok(posts);
+    }
+
     @GetMapping("/posts/mood")
     public ResponseEntity<List<PostResponseDTO>> getPostsByMood(@RequestParam List<String> moods) {
         System.out.println("params = " + moods); // 수신된 moods 로그 출력
@@ -78,6 +85,13 @@ public class Controller {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/posts/tags")
+    public ResponseEntity<List<PostEntity>> getPostsByTags(@RequestParam List<String> tagNames) {
+        System.out.println("params = " + tagNames);
+        List<PostEntity> posts = postService.getPostsByTags(tagNames);
+        return ResponseEntity.ok(posts);
+    }
+
     @GetMapping("/posts/latest")
     public ResponseEntity<List<PostResponseDTO>> getLatestPosts() {
         List<PostResponseDTO> posts = postService.getLatestPosts();
@@ -101,6 +115,12 @@ public class Controller {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    @GetMapping("/foodImage")
+    public ResponseEntity<List<String>> getFirstFoodImage(@RequestParam Integer postId) {
+        List<String> images = postService.getFirstFoodImageUrl(postId);
+        return ResponseEntity.ok(images);
     }
 
 }

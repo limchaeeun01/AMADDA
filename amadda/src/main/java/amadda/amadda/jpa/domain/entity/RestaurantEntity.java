@@ -27,6 +27,9 @@ public class RestaurantEntity {
     @Column(name = "total_post")
     private Integer totalPost = 0;
 
+    @Column(name = "restaurant_address")
+    private String restaurantAddress;
+
     @Column(name = "location_latitude")
     private Double locationLatitude;
 

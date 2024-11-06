@@ -8,9 +8,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import amadda.amadda.jpa.dao.FoodImageDAO;
 import amadda.amadda.jpa.dao.PostDAO;
+import amadda.amadda.jpa.domain.entity.PostEntity;
 import amadda.amadda.jpa.domain.entity.PostResponseDTO;
-import amadda.amadda.jpa.domain.entity.PostResponseDTO.Mood;
 
 @Service
 public class PostService {
@@ -26,11 +27,26 @@ public class PostService {
         return postDAO.findByMoodIn(moods);
     }
 
+    public List<PostResponseDTO> getPostsByIds(List<Integer> postIds) {
+        return postDAO.findAllById(postIds);
+    }
+
     public List<PostResponseDTO> getPostsByPrivacy(PostResponseDTO.Privacy privacy) {
         return postDAO.findPostsByPrivacy(privacy);
     }
 
     public List<PostResponseDTO> getPostsByColor(String color) {
+        // 'Total'일 경우 모든 게시물을 반환
+        if ("Total".equals(color)) {
+            return postDAO.findAllByOrderByPostDateAsc(); // 모든 게시물을 반환하는 DAO 메소드 필요
+        }
+
+        // 'Black'일 경우 totalPost가 50 미만인 게시물 검색
+        if ("Black".equals(color)) {
+            return postDAO.findPostsByLessThan50(); // totalPost가 50 미만인 게시물 반환하는 DAO 메소드 필요
+        }
+
+        // 그 외의 색상에 대해서는 최소 게시물 수를 기준으로 검색
         int minPosts = getMinPostsByColor(color);
         return postDAO.findPostsByColor(minPosts);
     }
@@ -48,7 +64,7 @@ public class PostService {
             case "Red":
                 return 50;
             default:  // "Black"
-                return 0;
+                return 0; // Black일 경우는 별도로 처리
         }
     }
 
@@ -63,6 +79,10 @@ public class PostService {
         return new ArrayList<>(combinedPosts);
     }
 
+    public List<PostEntity> getPostsByTags(List<String> tagNames) {
+        return postDAO.findPostsByTagNames(tagNames);
+    }
+
     public List<PostResponseDTO> getLatestPosts() {
         return postDAO.findAllByOrderByPostDateAsc();
     }
@@ -70,4 +90,12 @@ public class PostService {
     public List<PostResponseDTO> findPostsByReceiptVerification(Boolean receiptVerification) {
         return postDAO.findByReceiptVerification(receiptVerification);
     }
+
+    @Autowired
+    private FoodImageDAO foodImageDAO;
+
+    public List<String> getFirstFoodImageUrl(Integer postId) {
+        return foodImageDAO.findFirstFoodImageUrlByPostId(postId);
+    }
+
 }

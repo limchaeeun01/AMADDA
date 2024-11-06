@@ -1,7 +1,5 @@
 package amadda.amadda.jpa.domain.entity;
 
-import org.hibernate.annotations.DynamicUpdate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,21 +10,21 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Table(name = "tag")
+@Table(name = "food_image")
 @Data
 @Entity
-@DynamicUpdate
-public class TagEntity {
+public class FoodImageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tag_id")
-    private Integer tagId;
+    @Column(name = "food_image_id")
+    private Integer foodImageId;
 
-    @Column(name = "tag_name", nullable = false, length = 50)
-    private String tagName;
+    @Column(name = "food_image_url")
+    private String foodImageUrl;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
     private PostEntity post;
+
 }
