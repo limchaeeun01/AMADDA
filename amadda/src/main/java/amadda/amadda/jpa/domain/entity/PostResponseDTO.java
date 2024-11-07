@@ -54,6 +54,9 @@ public class PostResponseDTO {
     @Column(name = "receipt_verification")
     private Boolean receiptVerification = false;
 
+    @Column(name = "daily_views")
+    private Integer dailyViews = 0;
+
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private RestaurantEntity restaurant;

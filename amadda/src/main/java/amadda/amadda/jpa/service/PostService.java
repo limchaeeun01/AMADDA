@@ -1,8 +1,10 @@
 package amadda.amadda.jpa.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +85,10 @@ public class PostService {
         return postDAO.findPostsByTagNames(tagNames);
     }
 
+    public List<PostEntity> getPostsByTopics(List<String> topicNames) {
+        return postDAO.findPostsByTopicNames(topicNames);
+    }
+
     public List<PostResponseDTO> getLatestPosts() {
         return postDAO.findAllByOrderByPostDateAsc();
     }
@@ -96,6 +102,24 @@ public class PostService {
 
     public List<String> getFirstFoodImageUrl(Integer postId) {
         return foodImageDAO.findFirstFoodImageUrlByPostId(postId);
+    }
+
+    public Map<Integer, String> getFirstFoodImagesByPostIds(List<Integer> postIds) {
+        List<String> imageUrls = foodImageDAO.findFoodImagesByPostIds(postIds);
+
+        Map<Integer, String> postImageMap = new HashMap<>();
+        for (Integer postId : postIds) {
+            String imageUrl = imageUrls.stream()
+                    .filter(url -> url != null) // 각 postId에 대한 첫 번째 이미지 URL만 추가
+                    .findFirst().orElse("Image not found");
+            postImageMap.put(postId, imageUrl);
+        }
+
+        return postImageMap;
+    }
+
+    public List<PostResponseDTO> getPostsSortedByDailyViews() {
+        return postDAO.findAllOrderByDailyViewsDesc();
     }
 
 }

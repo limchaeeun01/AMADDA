@@ -2,13 +2,11 @@ package amadda.amadda.jpa.dao;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import amadda.amadda.jpa.domain.entity.FoodImageEntity;
 import amadda.amadda.jpa.domain.entity.PostEntity;
 import amadda.amadda.jpa.domain.entity.PostResponseDTO;
 
@@ -39,6 +37,9 @@ public interface PostDAO extends JpaRepository<PostResponseDTO, Integer> {
     @Query("SELECT DISTINCT p FROM TagEntity t JOIN t.post p WHERE t.tagName IN :tagNames")
     List<PostEntity> findPostsByTagNames(@Param("tagNames") List<String> tagNames);
 
+    @Query("SELECT DISTINCT p FROM TopicEntity t JOIN t.post p WHERE t.topicName IN :topicNames")
+    List<PostEntity> findPostsByTopicNames(@Param("topicNames") List<String> topicNames);
+
     List<PostResponseDTO> findByMoodIn(List<String> moods);
 
     @Query("SELECT p FROM PostResponseDTO p WHERE p.postId IN :postIds")
@@ -47,5 +48,8 @@ public interface PostDAO extends JpaRepository<PostResponseDTO, Integer> {
     List<PostResponseDTO> findAllByOrderByPostDateAsc();
 
     List<PostResponseDTO> findByReceiptVerification(Boolean receiptVerification);
+
+    @Query("SELECT p FROM PostResponseDTO p ORDER BY p.dailyViews DESC")
+    List<PostResponseDTO> findAllOrderByDailyViewsDesc();
 
 }

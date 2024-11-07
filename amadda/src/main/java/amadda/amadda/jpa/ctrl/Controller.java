@@ -1,13 +1,13 @@
 package amadda.amadda.jpa.ctrl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,6 +92,13 @@ public class Controller {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping("/posts/topics")
+    public ResponseEntity<List<PostEntity>> getPostsByTopics(@RequestParam List<String> topicNames) {
+        System.out.println("params = " + topicNames);
+        List<PostEntity> posts = postService.getPostsByTopics(topicNames);
+        return ResponseEntity.ok(posts);
+    }
+
     @GetMapping("/posts/latest")
     public ResponseEntity<List<PostResponseDTO>> getLatestPosts() {
         List<PostResponseDTO> posts = postService.getLatestPosts();
@@ -121,6 +128,18 @@ public class Controller {
     public ResponseEntity<List<String>> getFirstFoodImage(@RequestParam Integer postId) {
         List<String> images = postService.getFirstFoodImageUrl(postId);
         return ResponseEntity.ok(images);
+    }
+
+    @GetMapping("/foodImages")
+    public ResponseEntity<Map<Integer, String>> getFoodImagesByPostIds(@RequestParam List<Integer> postIds) {
+        Map<Integer, String> images = postService.getFirstFoodImagesByPostIds(postIds);
+        return ResponseEntity.ok(images);
+    }
+
+    @GetMapping("/posts/dailyViews")
+    public ResponseEntity<List<PostResponseDTO>> getPostsSortedByViews() {
+        List<PostResponseDTO> posts = postService.getPostsSortedByDailyViews();
+        return ResponseEntity.ok(posts);
     }
 
 }
